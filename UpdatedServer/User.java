@@ -5,8 +5,8 @@ public class User {
     private boolean dead = false;
     private int lives=3;
     private int score=0;
-    private int x = 7 * Game.BLOCK_SIZE;
-    private int y = 11 * Game.BLOCK_SIZE;
+    private int x = 7 * Server.BLOCK_SIZE;
+    private int y = 11 * Server.BLOCK_SIZE;
     private int dx = 0;
     private int dy = 0;
     private int req_dx = 0;
@@ -81,7 +81,7 @@ public class User {
         this.inGame=inGame;
     }
 
-    public void setMorto (boolean dead) {
+    public void setDead (boolean dead) {
         this.dead=dead;
     }
 
