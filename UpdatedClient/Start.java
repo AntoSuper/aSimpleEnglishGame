@@ -20,6 +20,9 @@ public class Start extends JFrame implements ActionListener {
     public Start () {
         super("Start");
         setLayout(new BorderLayout());
+        this.setUndecorated(true);
+        //this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+        this.setLocationRelativeTo(null);
         
         ImagePanel centro = new ImagePanel (hotbarWallpaper);
         centro.setLayout(new BorderLayout());
@@ -72,7 +75,7 @@ public class Start extends JFrame implements ActionListener {
                             dispose();
                 break;
                 
-            case "ESCI": setVisible(false);
+            case "QUIT": setVisible(false);
                          dispose();
                          System.exit(0);
                 break;
