@@ -16,7 +16,7 @@ public class Client {
             this.user = user;
         }
         catch (java.io.IOException e) {
-            chiudiConnessione(clientSocket, inFromServer, outToServer);
+            closeConnection(clientSocket, inFromServer, outToServer);
         }
     }
 
@@ -37,9 +37,9 @@ public class Client {
     }
 
     public String[]  robotsPosition () {
-        sendMessage("robotsPosition"+utente.getNickname());
+        sendMessage("robotsPosition"+user.getNickname());
 
-        String msg = riceviMessaggio();
+        String msg = receiveMessage();
         String robots[] = msg.split("§");
 
         closeConnection(clientSocket, inFromServer, outToServer);
@@ -65,7 +65,7 @@ public class Client {
         myInfo = myInfo + user.getLives() + "§" + user.getScore() + "§" + user.getX() + "§" + user.getY() + "§" + user.getDX() + "§" + user.getDY() + "§" + user.getReqDX() + "§" + user.getReqDY();
 
         sendMessage(myInfo);
-        chiudiConnessione(clientSocket, inFromServer, outToServer);
+        closeConnection(clientSocket, inFromServer, outToServer);
     }
 
     public User opponentInfo () {
