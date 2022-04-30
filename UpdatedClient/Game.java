@@ -16,7 +16,7 @@ public class Game implements ActionListener {
 
 
     public Game () {
-
+        
     }
 
     public void actionPerformed (ActionEvent e) {
