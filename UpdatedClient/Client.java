@@ -20,6 +20,14 @@ public class Client {
         }
     }
 
+    public Client (User x) {
+        this.user = x;
+    }
+
+    public User getUser () {
+        return user;
+    }
+
     public void login () {
         sendMessage("login§"+user.getNickname()+"§"+user.getCharacter());
         String msg[] = receiveMessage().split("§");
@@ -97,17 +105,26 @@ public class Client {
         return opponent;
     }
 
-    public Short[] screenData () {
+    public short[] getScreenData () {
         sendMessage("screenData§"+user.getNickname());
         String msg[] = receiveMessage().split("§");
 
-        Short screenData[] = {};
+        short screenData[] = {};
 
         for (int i=1;i<msg.length;i++) {
             screenData[i] = Short.parseShort(msg[i]);
         }
 
         return screenData;
+    }
+
+    public void sendScreenData (short[] screenData) {
+        String s = "newScreenData§"+user.getNickname()+"§";
+        for (int i=0;i<screenData.length;i++) {
+            s = s + screenData[i] + "§";
+        }
+        sendMessage(s);
+        closeConnection(clientSocket, inFromServer, outToServer);
     }
 
     public String receiveMessage () {

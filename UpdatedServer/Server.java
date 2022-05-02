@@ -73,10 +73,11 @@ public class Server implements ActionListener {
                 this.outToClient = new BufferedWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
 
                 while (!connectionSocket.isClosed()) {
-                    String msg[] = receiveMessage().split("§");
-                    String comando = msg[0];
+                    String command = receiveMessage();
+                    String msg[] = command.split("§");
+                    System.out.println(command);
 
-                    switch (comando) {
+                    switch (msg[0]) {
                         case "login":   User x = new User(msg[1], msg[2]);
                                         tantiUser.add(x);
                                         sendMessage("welcome§"+x.getNickname());
@@ -131,27 +132,33 @@ public class Server implements ActionListener {
                                         }
                             break;
 
-                        case "opponentInfo": for (int i=0;i<tantiUser.size();i++) {
-                                                if (!msg[1].equals(tantiUser.get(i).getNickname())) {
-                                                    String opponentInfo = "info§" + tantiUser.get(i).getNickname() + "§" + tantiUser.get(i).getCharacter() + "§";
-                                                    if (tantiUser.get(i).getInGame()) {
-                                                        opponentInfo = opponentInfo + "true§";
-                                                    }
-                                                    else {
-                                                        opponentInfo = opponentInfo + "false§";
-                                                    }
-                                                    if (tantiUser.get(i).getDead()) {
-                                                        opponentInfo = opponentInfo + "true§";
-                                                    }
-                                                    else {
-                                                        opponentInfo = opponentInfo + "false§";
-                                                    }
-                                                    opponentInfo = opponentInfo + tantiUser.get(i).getLives() + "§" + tantiUser.get(i).getScore() + "§" + tantiUser.get(i).getX() + "§" + tantiUser.get(i).getY() + "§" +  tantiUser.get(i).getDX() + "§" + tantiUser.get(i).getDY() + "§" + tantiUser.get(i).getReqDX() + "§" + tantiUser.get(i).getReqDY();   
+                        case "opponentInfo": if (tantiUser.size()>1) {
+                                                for (int i=0;i<tantiUser.size();i++) {
+                                                    if (!msg[1].equals(tantiUser.get(i).getNickname())) {
+                                                        String opponentInfo = "info§" + tantiUser.get(i).getNickname() + "§" + tantiUser.get(i).getCharacter() + "§";
+                                                        if (tantiUser.get(i).getInGame()) {
+                                                            opponentInfo = opponentInfo + "true§";
+                                                        }
+                                                        else {
+                                                            opponentInfo = opponentInfo + "false§";
+                                                        }
+                                                        if (tantiUser.get(i).getDead()) {
+                                                            opponentInfo = opponentInfo + "true§";
+                                                        }
+                                                        else {
+                                                            opponentInfo = opponentInfo + "false§";
+                                                        }
+                                                        opponentInfo = opponentInfo + tantiUser.get(i).getLives() + "§" + tantiUser.get(i).getScore() + "§" + tantiUser.get(i).getX() + "§" + tantiUser.get(i).getY() + "§" +  tantiUser.get(i).getDX() + "§" + tantiUser.get(i).getDY() + "§" + tantiUser.get(i).getReqDX() + "§" + tantiUser.get(i).getReqDY();   
 
-                                                    sendMessage(opponentInfo);
-                                                    closeConnection(connectionSocket, inFromClient, outToClient);
-                                                    break;
-                                                }
+                                                        sendMessage(opponentInfo);
+                                                        closeConnection(connectionSocket, inFromClient, outToClient);
+                                                        break;
+                                                    }
+                                            }
+                                        }
+                                        else {
+                                            sendMessage("error");
+                                            closeConnection(connectionSocket, inFromClient, outToClient);
                                         }
                             break;
 
@@ -166,10 +173,20 @@ public class Server implements ActionListener {
                                             }
                             break;
 
+                        case "newScreenData": int j = 0;
+                                                for (int i=2;i<msg.length;i++) {
+                                                    screenData[j] = Short.valueOf(msg[i]);
+                                                    j++;
+                                                }
+                                                sendMessage("msgReceived");
+                                                closeConnection(connectionSocket, inFromClient, outToClient);
+                            break;
+
                         default:
                             break;
                     }
                 }
+                System.out.println("Client disconnected!");
             }
         }
         catch (java.io.IOException e) {
