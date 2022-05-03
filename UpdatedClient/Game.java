@@ -19,11 +19,13 @@ public class Game extends JPanel implements ActionListener {
     private final int PLAYER_SPEED = 6; 
     
     private ArrayList<Robot> tantiRobot = new ArrayList<Robot>();
+
+    private User player;
     private User opponent;
 
     private String IP;
     private int port;
-    private Client player;
+    private Client client;
     private Socket socket;
 
     private Image heart, robot;
@@ -55,31 +57,32 @@ public class Game extends JPanel implements ActionListener {
     public void openConnection (String IP, int port, User user) {
         try {
             socket = new Socket(IP, port);
-            player = new Client(socket, utente);
+            client = new Client(socket, user);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Game (Client player, String IP, int port) {
-        this.player = player;
+    public Game (String nickname, String character, String IP, int port) {
+        this.player = new User(nickname, character);
+
+        openConnection(IP, port, player);
+        client.login();
+
+        openConnection(IP, port, player);
+        client.sendInfo();
+
         this.opponent = new User("X", "margie");
 
-        openConnection(IP, port, player.getUser());
-        player.login();
-
-        openConnection(IP, port, player.getUser());
-        player.sendInfo();
-
-        /*loadImages();
+        loadImages();
 
         setVariables();
 
         addKeyListener(new TAdapter());
         setFocusable(true);
 
-        initLevel();*/
+        initLevel();
     }
 
     private void loadImages () {
@@ -100,10 +103,10 @@ public class Game extends JPanel implements ActionListener {
     private void drawScore(Graphics2D g) {
         g.setFont(font);
         g.setColor(new Color(5, 181, 79));
-        String s = "Score: " + player.getUser().getScore();
+        String s = "Score: " + player.getScore();
         g.drawString(s, SCREEN_SIZE / 2 + 96, SCREEN_SIZE + 16);
 
-        for (int i = 0; i < player.getUser().getLives(); i++) {
+        for (int i = 0; i < player.getLives(); i++) {
             g.drawImage(heart, i * 28 + 8, SCREEN_SIZE + 1, this);
         }
     }
@@ -124,7 +127,7 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private boolean allDead() {
-        if (player.getUser().getDead() && opponent.getDead()) {
+        if (player.getDead() && opponent.getDead()) {
             return true;
         }
         else {
@@ -136,80 +139,81 @@ public class Game extends JPanel implements ActionListener {
         if (!allDead()) {
             moveRobots(g2d);
         }
-        if (player.getUser().getDead()) {
+        if (player.getDead()) {
             death();
         }
 
 
         movePlayer(player);
-        movePlayer(new Client(opponent));
+        movePlayer(opponent);
 
         checkCollision(player);
-        checkCollision(new Client(opponent));
+        checkCollision(opponent);
 
         drawPlayer(g2d, player);
-        drawPlayer(g2d, new Client(opponent));
+        drawPlayer(g2d, opponent);
 
         checkMaze();
     }
 
-    public void checkCollision (Client x) {
-        if (x.getUser().getX() % BLOCK_SIZE == 0 && x.getUser().getY() % BLOCK_SIZE == 0) {
-            int pos = x.getUser().getX() / BLOCK_SIZE + N_BLOCKS * (int) (x.getUser().getY() / BLOCK_SIZE); 
+    public void checkCollision (User x) {
+        if (x.getX() % BLOCK_SIZE == 0 && x.getY() % BLOCK_SIZE == 0) {
+            int pos = x.getX() / BLOCK_SIZE + N_BLOCKS * (int) (x.getY() / BLOCK_SIZE); 
             short ch = screenData[pos];
             
             if ((ch & 16) != 0) {
                 screenData[pos] = (short) (ch & 15);
-                x.getUser().setScore(x.getUser().getScore()+1);
+                x.setScore(x.getScore()+1);
             }
         }
     }
 
-    public void movePlayer (Client x) {
+    public void movePlayer (User x) {
         int pos;
         short ch;
 
-        if (x.getUser().getX() % BLOCK_SIZE == 0 && x.getUser().getY() % BLOCK_SIZE == 0) {
-            pos = x.getUser().getX() / BLOCK_SIZE + N_BLOCKS * (int) (x.getUser().getY() / BLOCK_SIZE); 
+        if (x.getX() % BLOCK_SIZE == 0 && x.getY() % BLOCK_SIZE == 0) {
+            pos = x.getX() / BLOCK_SIZE + N_BLOCKS * (int) (x.getY() / BLOCK_SIZE); 
             ch = screenData[pos];
 
-            if (x.getUser().getReqDX() !=0 || x.getUser().getReqDY() != 0) {
-                if (!((x.getUser().getReqDX() == -1 && x.getUser().getReqDY() == 0 && (ch & 1) != 0) 
-                || (x.getUser().getReqDX() == 1 && x.getUser().getReqDY() == 0 && (ch & 4) != 0) 
-                || (x.getUser().getReqDX() == 0 && x.getUser().getReqDY() == -1 && (ch & 2) != 0) 
-                || (x.getUser().getReqDX() == 0 && x.getUser().getReqDY() == 1 && (ch & 8) != 0))) {
-                    x.getUser().setDX(x.getUser().getReqDX());
-                    x.getUser().setDY(x.getUser().getReqDY());
+            if (x.getReqDX() !=0 || x.getReqDY() != 0) {
+                if (!((x.getReqDX() == -1 && x.getReqDY() == 0 && (ch & 1) != 0) 
+                || (x.getReqDX() == 1 && x.getReqDY() == 0 && (ch & 4) != 0) 
+                || (x.getReqDX() == 0 && x.getReqDY() == -1 && (ch & 2) != 0) 
+                || (x.getReqDX() == 0 && x.getReqDY() == 1 && (ch & 8) != 0))) {
+                    x.setDX(x.getReqDX());
+                    x.setDY(x.getReqDY());
                 }
             }
 
-            if ((x.getUser().getDX() == -1 && x.getUser().getDY() == 0 && (ch & 1) != 0) 
-                || (x.getUser().getDX() == 1 && x.getUser().getDY() == 0 && (ch & 4) != 0) 
-                || (x.getUser().getDX() == 0 && x.getUser().getDY()  == -1 && (ch & 2) != 0) 
-                || (x.getUser().getDX() == 0 && x.getUser().getDY() == 1 && (ch & 8) != 0)) {
-                    x.getUser().setDX(0);
-                    x.getUser().setDY(0);
+            if ((x.getDX() == -1 && x.getDY() == 0 && (ch & 1) != 0) 
+                || (x.getDX() == 1 && x.getDY() == 0 && (ch & 4) != 0) 
+                || (x.getDX() == 0 && x.getDY()  == -1 && (ch & 2) != 0) 
+                || (x.getDX() == 0 && x.getDY() == 1 && (ch & 8) != 0)) {
+                    x.setDX(0);
+                    x.setDY(0);
                 }
         }
 
-        x.getUser().setX(x.getUser().getX() + PLAYER_SPEED * x.getUser().getDX());
-        x.getUser().setY(x.getUser().getY() + PLAYER_SPEED * x.getUser().getDY());
+        x.setX(x.getX() + PLAYER_SPEED * x.getDX());
+        x.setY(x.getY() + PLAYER_SPEED * x.getDY());
     }
 
-    public void drawPlayer(Graphics2D g2d, Client x) {
-        if (x.getUser().getReqDX() == -1) {
-            g2d.drawImage(left, x.getUser().getX() + 1, x.getUser().getY()+ 1, this);
-        } else if (x.getUser().getReqDX() == 1) {
-            g2d.drawImage(right, x.getUser().getX() + 1, x.getUser().getY() + 1, this);
-        } else if (x.getUser().getReqDY() == -1) {
-            g2d.drawImage(up, x.getUser().getX()+ 1, x.getUser().getY() + 1, this);
+    public void drawPlayer(Graphics2D g2d, User x) {
+        if (x.getReqDX() == -1) {
+            g2d.drawImage(left, x.getX() + 1, x.getY()+ 1, this);
+        } else if (x.getReqDX() == 1) {
+            g2d.drawImage(right, x.getX() + 1, x.getY() + 1, this);
+        } else if (x.getReqDY() == -1) {
+            g2d.drawImage(up, x.getX()+ 1, x.getY() + 1, this);
         } else {
-            g2d.drawImage(down, x.getUser().getX() + 1, x.getUser().getY()+ 1, this);
+            g2d.drawImage(down, x.getX() + 1, x.getY()+ 1, this);
         }
     }
 
     private void moveRobots(Graphics2D g2d) {
-        String [] robots = player.robotsPosition();
+        openConnection(IP, port, player);
+        String [] robots = client.robotsPosition();
 
         int j = 0;
         for (int i=1;i<robots.length;i++) {
@@ -221,8 +225,8 @@ public class Game extends JPanel implements ActionListener {
         for (int i=0;i<tantiRobot.size();i++) {
             drawRobot(g2d, tantiRobot.get(i).getX() + 1, tantiRobot.get(i).getY() + 1);
 
-            if (player.getUser().getX() > (tantiRobot.get(i).getX() - 12) && player.getUser().getX() < (tantiRobot.get(i).getX() + 12) && player.getUser().getY() > (tantiRobot.get(i).getY() - 12) && player.getUser().getY()< (tantiRobot.get(i).getY() + 12) && player.getUser().getInGame()) {
-                player.getUser().setDead(true);
+            if (player.getX() > (tantiRobot.get(i).getX() - 12) && player.getX() < (tantiRobot.get(i).getX() + 12) && player.getY() > (tantiRobot.get(i).getY() - 12) && player.getY()< (tantiRobot.get(i).getY() + 12) && player.getInGame()) {
+                player.setDead(true);
             }
         }
     }
@@ -255,14 +259,15 @@ public class Game extends JPanel implements ActionListener {
             initLevel();
         }*/
 
-        player.sendScreenData(screenData);
+        openConnection(IP, port, player);
+        client.sendScreenData(screenData);
     }
 
     private void death() {
-        player.getUser().setLives(player.getUser().getLives()-1);
-        if (player.getUser().getLives() == 0) {
-            player.getUser().setInGame(false);
-            player.getUser().setDead(true);
+        player.setLives(player.getLives()-1);
+        if (player.getLives() == 0) {
+            player.setInGame(false);
+            player.setDead(true);
         }
         //continueLevel();
         //messaggio al server player morto
@@ -344,9 +349,14 @@ public class Game extends JPanel implements ActionListener {
         drawMaze(g2d);
         drawScore(g2d);
 
-        player.sendInfo();
-        opponent = player.opponentInfo();
-        screenData = player.getScreenData();
+        openConnection(IP, port, player);
+        client.sendInfo();
+
+        openConnection(IP, port, player);
+        opponent = client.opponentInfo();
+
+        openConnection(IP, port, player);
+        screenData = client.getScreenData();
 
         if (allInGame()) {
             playGame(g2d);
@@ -360,7 +370,7 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public boolean allInGame () {
-        if (player.getUser().getInGame() && opponent.getInGame()) {
+        if (player.getInGame() && opponent.getInGame()) {
             return true;
         }
         else {
@@ -372,38 +382,38 @@ public class Game extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             int tasto = e.getKeyCode();
 
-            if (player.getUser().getInGame()) {
+            if (player.getInGame()) {
                 switch (tasto) {
                     case 37: 
-                            player.getUser().setReqDX(-1);
-                            player.getUser().setReqDY(0);
+                            player.setReqDX(-1);
+                            player.setReqDY(0);
                         break;
 
                     case 39: 
-                            player.getUser().setReqDX(1);
-                            player.getUser().setReqDY(0);
+                            player.setReqDX(1);
+                            player.setReqDY(0);
                         break;
 
                     case 38: 
-                            player.getUser().setReqDX(0);
-                            player.getUser().setReqDY(-1);
+                            player.setReqDX(0);
+                            player.setReqDY(-1);
                         break;
 
                     case 40: 
-                            player.getUser().setReqDX(0);    
-                            player.getUser().setReqDY(1);
+                            player.setReqDX(0);    
+                            player.setReqDY(1);
                         break;   
                         
                     case 27:
                             if (timerGame.isRunning()) {
-                                    player.getUser().setInGame(false);
+                                    player.setInGame(false);
                             }
                         break;    
                 }
             } 
             else {
                 if (tasto == 32) {
-                    player.getUser().setInGame(true);
+                    player.setInGame(true);
                     if (allInGame()) {
                         initLevel();
                     }
