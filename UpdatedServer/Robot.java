@@ -1,9 +1,9 @@
 public class Robot {
 
-    private int x;
-    private int y;
-    private int dx;
-    private int dy;
+    private int x = 4 * Server.BLOCK_SIZE;
+    private int y = 4 * Server.BLOCK_SIZE;
+    private int dx = 0;
+    private int dy = 0;
     private int speed;
 
     public Robot () {
@@ -47,7 +47,7 @@ public class Robot {
     }
 
     public void setSpeed (int speed) {
-        this.speed=speed;
+        this.speed = speed;
     }
 
     public String toString () {

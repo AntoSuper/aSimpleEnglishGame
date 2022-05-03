@@ -4,8 +4,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.net.*;
 
-
-
 public class Game extends JPanel implements ActionListener {
     
     private Dimension d;
@@ -65,6 +63,8 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public Game (String nickname, String character, String IP, int port) {
+        this.IP = IP;
+        this.port = port;
         this.player = new User(nickname, character);
 
         openConnection(IP, port, player);
@@ -73,7 +73,7 @@ public class Game extends JPanel implements ActionListener {
         openConnection(IP, port, player);
         client.sendInfo();
 
-        this.opponent = new User("X", "margie");
+        this.opponent = new User("X", "X");
 
         loadImages();
 
@@ -90,7 +90,7 @@ public class Game extends JPanel implements ActionListener {
         up = new ImageIcon("images/girl.png").getImage();
         left = new ImageIcon("images/girl.png").getImage();
         right = new ImageIcon("images/girl.png").getImage();
-        robot = new ImageIcon("images/robot.gif").getImage();
+        robot = new ImageIcon("images/robot.png").getImage();
         heart = new ImageIcon("images/heart.png").getImage();
     }
 
@@ -123,6 +123,10 @@ public class Game extends JPanel implements ActionListener {
     private void initLevel() {
         for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
             screenData[i] = levelData[i];
+        }
+
+        for (int i=0;i<6;i++) {
+            tantiRobot.add(new Robot());
         }
     }
 
@@ -352,11 +356,13 @@ public class Game extends JPanel implements ActionListener {
         openConnection(IP, port, player);
         client.sendInfo();
 
-        openConnection(IP, port, player);
-        opponent = client.opponentInfo();
+        if (player.getInGame()) {
+            openConnection(IP, port, player);
+            opponent = client.opponentInfo();
 
-        openConnection(IP, port, player);
-        screenData = client.getScreenData();
+            openConnection(IP, port, player);
+            screenData = client.getScreenData();
+        }
 
         if (allInGame()) {
             playGame(g2d);

@@ -20,7 +20,6 @@ public class Server implements ActionListener {
 
     private int N_ROBOTS = 6;
 
-    private int [] robotSpeed;
     private int [] dx, dy;
 
     private int currentSpeed = 3;
@@ -47,7 +46,7 @@ public class Server implements ActionListener {
     };
 
     private Timer t;
-    private boolean inGame;
+    private boolean inGame = false;
 
     public Server (ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
@@ -58,13 +57,6 @@ public class Server implements ActionListener {
 
         try {
             while (!serverSocket.isClosed()) {
-                if (allInGame() && inGame!=true) {
-                    t = new Timer(40, this);
-                    t.setActionCommand("moveRobots"); 
-                    t.start();
-
-                    inGame = true;
-                }
 
                 Socket connectionSocket = serverSocket.accept(); 
                 System.out.println("Client connected! IP: " + connectionSocket.getRemoteSocketAddress());
@@ -88,6 +80,7 @@ public class Server implements ActionListener {
                                         for (int i=0;i<tantiUser.size();i++) {
                                             if (y.equals(tantiUser.get(i))) {
                                                 tantiUser.remove(i);
+                                                inGame = false;
                                                 sendMessage("byeBye§"+y.getNickname());
                                                 closeConnection(connectionSocket, inFromClient, outToClient);
                                             }
@@ -162,7 +155,7 @@ public class Server implements ActionListener {
                                         }
                             break;
 
-                        case "screenData": if (levelData!=null) {
+                        case "screenData": if (screenData!=null) {
                                                 String data = "data§";
                                                 for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
                                                     data = data + screenData[i] + "§";
@@ -207,8 +200,12 @@ public class Server implements ActionListener {
     }
 
     private void setVariables() {
+
         for (int i=0;i<N_ROBOTS;i++) {
             tantiRobot.add(new Robot());
+
+            int random = (int) Math.random() * (currentSpeed +1);
+            tantiRobot.get(i).setSpeed(validSpeed[random]);
         }
 
         screenData = new short[N_BLOCKS * N_BLOCKS];
@@ -221,6 +218,14 @@ public class Server implements ActionListener {
     private void initLevel() {
         for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
             screenData[i] = levelData[i];
+        }
+
+        if (/*allInGame() && */inGame!=true) {
+            t = new Timer(40, this);
+            t.setActionCommand("moveRobots"); 
+            t.restart();
+
+            inGame = true;
         }
     }
 
@@ -235,26 +240,26 @@ public class Server implements ActionListener {
                 count = 0;
 
                 if ((screenData[pos] & 1) == 0 && tantiRobot.get(i).getDX() != 1) {
-                    tantiRobot.get(i).setDX(-1);
-                    tantiRobot.get(i).setDY(0);
+                    dx[count] = -1;
+                    dy[count] = 0;
                     count++;
                 }
 
                 if ((screenData[pos] & 2) == 0 && tantiRobot.get(i).getDY()  != 1) {
-                    tantiRobot.get(i).setDX(0);
-                    tantiRobot.get(i).setDY(-1);
+                    dx[count] = 0;
+                    dy[count] = -1;
                     count++;
                 }
 
                 if ((screenData[pos] & 4) == 0 && tantiRobot.get(i).getDX()  != -1) {
-                    tantiRobot.get(i).setDX(1);
-                    tantiRobot.get(i).setDY(0);
+                    dx[count] = 1;
+                    dy[count] = 0;
                     count++;
                 }
 
                 if ((screenData[pos] & 8) == 0 && tantiRobot.get(i).getDY()  != -1) {
-                    tantiRobot.get(i).setDX(0);
-                    tantiRobot.get(i).setDY(1);
+                    dx[count] = 0;
+                    dy[count] = 1;
                     count++;
                 }
 
@@ -282,10 +287,8 @@ public class Server implements ActionListener {
                 }
             }
 
-            tantiRobot.get(i).setX(tantiRobot.get(i).getX() + (tantiRobot.get(i).getDX() * robotSpeed[i]));
-            tantiRobot.get(i).setY(tantiRobot.get(i).getY() + (tantiRobot.get(i).getDY() * robotSpeed[i]));
-            
-            //drawRobot(g2d, robot_x[i] + 1, robot_y[i] + 1);
+            tantiRobot.get(i).setX(tantiRobot.get(i).getX() + (tantiRobot.get(i).getDX() * tantiRobot.get(i).getSpeed()));
+            tantiRobot.get(i).setY(tantiRobot.get(i).getY() + (tantiRobot.get(i).getDY() * tantiRobot.get(i).getSpeed()));
 
             /*if (player.getX() > (robot_x[i] - 12) && player.getX() < (robot_x[i] + 12)
                 && player.getY() > (robot_y[i] - 12) && player.getY()< (robot_y[i] + 12)
@@ -308,7 +311,7 @@ public class Server implements ActionListener {
             dx = -dx;
             random = (int) Math.random() * (currentSpeed +1);
 
-            robotSpeed [i] = validSpeed[random];
+            tantiRobot.get(i).setSpeed(validSpeed[random]);
         }
 
         //broadcast message quando tutti morti o tutti secondo livello?????

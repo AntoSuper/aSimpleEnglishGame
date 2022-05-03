@@ -45,7 +45,7 @@ public class Client {
     }
 
     public String[]  robotsPosition () {
-        sendMessage("robotsPosition"+user.getNickname());
+        sendMessage("robotsPosition§"+user.getNickname());
 
         String msg = receiveMessage();
         String robots[] = msg.split("§");
@@ -102,6 +102,7 @@ public class Client {
         opponent.setReqDX(Integer.parseInt(msg[11]));
         opponent.setReqDY(Integer.parseInt(msg[12]));
 
+        closeConnection(clientSocket, inFromServer, outToServer);
         return opponent;
     }
 
@@ -109,20 +110,26 @@ public class Client {
         sendMessage("screenData§"+user.getNickname());
         String msg[] = receiveMessage().split("§");
 
-        short screenData[] = {};
+        int DIM = msg.length-1;
+        short screenData[] = new short[DIM];
+        
+        int j = 0;
+            for (int i=1;i<msg.length;i++) {
+                screenData[j] = Short.parseShort(msg[i]);
+                j++;
+            }
 
-        for (int i=1;i<msg.length;i++) {
-            screenData[i] = Short.parseShort(msg[i]);
-        }
-
+        closeConnection(clientSocket, inFromServer, outToServer);
         return screenData;
     }
 
     public void sendScreenData (short[] screenData) {
         String s = "newScreenData§"+user.getNickname()+"§";
+
         for (int i=0;i<screenData.length;i++) {
             s = s + screenData[i] + "§";
         }
+
         sendMessage(s);
         closeConnection(clientSocket, inFromServer, outToServer);
     }
