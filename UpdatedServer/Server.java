@@ -221,7 +221,7 @@ public class Server implements ActionListener {
         }
 
         if (/*allInGame() && */inGame!=true) {
-            t = new Timer(40, this);
+            t = new Timer(60, this);
             t.setActionCommand("moveRobots"); 
             t.restart();
 

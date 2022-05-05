@@ -115,7 +115,7 @@ public class Game extends JPanel implements ActionListener {
         screenData = new short[N_BLOCKS * N_BLOCKS];
         d = new Dimension (400, 400);
 
-        timerGame = new Timer(40, this);
+        timerGame = new Timer(60, this);
         timerGame.setActionCommand("timer"); 
         timerGame.restart();
     }
