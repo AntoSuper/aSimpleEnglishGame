@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class GameStart extends JFrame {
 
-    private String IP = "173.249.0.76";
+    private String IP = "127.0.0.1";
     private int port = 9999;
 
     public GameStart (String nickname, String character) {
