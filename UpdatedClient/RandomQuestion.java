@@ -13,7 +13,7 @@ public class RandomQuestion extends JPanel implements ActionListener {
     public RandomQuestion () {
         this.setLayout(new BorderLayout());
 
-        ArrayList<Question> aLotOfQuestions = readFile("questions.txt");
+        ArrayList<Question> aLotOfQuestions = readFile("files/questions.txt");
 
         q = aLotOfQuestions.get((int)(Math.random() * aLotOfQuestions.size())); 
 

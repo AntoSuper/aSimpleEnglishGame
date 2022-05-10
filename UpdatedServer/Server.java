@@ -187,6 +187,25 @@ public class Server implements ActionListener {
         }
     }
 
+    public void checkMaze () {
+        int i = 0;
+        boolean finished = true;
+
+        while (i < N_BLOCKS * N_BLOCKS && finished) {
+            if ((screenData[i] & 48) != 0) {
+                finished = false;
+            }
+            i++;
+        }
+
+        if (finished) {
+            player.setScore(player.getScore()+50);  
+            if (currentSpeed<maxSpeed) {
+                currentSpeed++;
+            }
+            initLevel();
+        }
+        
     private boolean allInGame () {
         if (tantiUser.size()<2) {
             return false;
@@ -289,12 +308,6 @@ public class Server implements ActionListener {
 
             tantiRobot.get(i).setX(tantiRobot.get(i).getX() + (tantiRobot.get(i).getDX() * tantiRobot.get(i).getSpeed()));
             tantiRobot.get(i).setY(tantiRobot.get(i).getY() + (tantiRobot.get(i).getDY() * tantiRobot.get(i).getSpeed()));
-
-            /*if (player.getX() > (robot_x[i] - 12) && player.getX() < (robot_x[i] + 12)
-                && player.getY() > (robot_y[i] - 12) && player.getY()< (robot_y[i] + 12)
-                && player.getInGame()) {
-                    player.morto=true;
-            }*/
         }
     }
 
@@ -313,8 +326,6 @@ public class Server implements ActionListener {
 
             tantiRobot.get(i).setSpeed(validSpeed[random]);
         }
-
-        //broadcast message quando tutti morti o tutti secondo livello?????
     }
 
     @Override

@@ -27,9 +27,11 @@ public class Game extends JPanel implements ActionListener {
     private Socket socket;
 
     private Image heart, robot;
-    private Image up, down, left, right;
+    private Image upTommy, downTommy, leftTommy, rightTommy;
+    private Image upMargie, downMargie, leftMargie, rightMargie;
 
     private int currentSpeed = 3;
+    private final int maxSpeed = 6;
     private short [] screenData;
 
     private Timer timerGame;
@@ -86,10 +88,14 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void loadImages () {
-        down = new ImageIcon("images/girl.png").getImage();
-        up = new ImageIcon("images/girl.png").getImage();
-        left = new ImageIcon("images/girl.png").getImage();
-        right = new ImageIcon("images/girl.png").getImage();
+        downTommy = new ImageIcon("images/guy.png").getImage();
+        upTommy = new ImageIcon("images/guy.png").getImage();
+        leftTommy = new ImageIcon("images/guy.png").getImage();
+        rightTommy = new ImageIcon("images/guy.png").getImage();
+        downMargie = new ImageIcon("images/girl.png").getImage();
+        upMargie = new ImageIcon("images/girl.png").getImage();
+        leftMargie = new ImageIcon("images/girl.png").getImage();
+        rightMargie = new ImageIcon("images/girl.png").getImage();
         robot = new ImageIcon("images/robot.png").getImage();
         heart = new ImageIcon("images/heart.png").getImage();
     }
@@ -204,14 +210,27 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void drawPlayer(Graphics2D g2d, User x) {
-        if (x.getReqDX() == -1) {
-            g2d.drawImage(left, x.getX() + 1, x.getY()+ 1, this);
-        } else if (x.getReqDX() == 1) {
-            g2d.drawImage(right, x.getX() + 1, x.getY() + 1, this);
-        } else if (x.getReqDY() == -1) {
-            g2d.drawImage(up, x.getX()+ 1, x.getY() + 1, this);
-        } else {
-            g2d.drawImage(down, x.getX() + 1, x.getY()+ 1, this);
+        if (x.getCharacter().equals("Tommy")) {
+            if (x.getReqDX() == -1) {
+                g2d.drawImage(leftTommy, x.getX() + 1, x.getY()+ 1, this);
+            } else if (x.getReqDX() == 1) {
+                g2d.drawImage(rightTommy, x.getX() + 1, x.getY() + 1, this);
+            } else if (x.getReqDY() == -1) {
+                g2d.drawImage(upTommy, x.getX()+ 1, x.getY() + 1, this);
+            } else {
+                g2d.drawImage(downTommy, x.getX() + 1, x.getY()+ 1, this);
+            }
+        }
+        if (x.getCharacter().equals("Margie")) {
+            if (x.getReqDX() == -1) {
+                g2d.drawImage(leftMargie, x.getX() + 1, x.getY()+ 1, this);
+            } else if (x.getReqDX() == 1) {
+                g2d.drawImage(rightMargie, x.getX() + 1, x.getY() + 1, this);
+            } else if (x.getReqDY() == -1) {
+                g2d.drawImage(upMargie, x.getX()+ 1, x.getY() + 1, this);
+            } else {
+                g2d.drawImage(downMargie, x.getX() + 1, x.getY()+ 1, this);
+            }
         }
     }
 
@@ -250,18 +269,13 @@ public class Game extends JPanel implements ActionListener {
             i++;
         }
 
-        /*if (finished) {
-            player.setScore(player.getScore()+50);
-
-            if (N_ROBOTS < MAX_ROBOTS) {
-                N_ROBOTS++;
-            }
-
+        if (finished) {
+            player.setScore(player.getScore()+50);  
             if (currentSpeed<maxSpeed) {
                 currentSpeed++;
             }
             initLevel();
-        }*/
+        }
 
         openConnection(IP, port, player);
         client.sendScreenData(screenData);
@@ -273,33 +287,7 @@ public class Game extends JPanel implements ActionListener {
             player.setInGame(false);
             player.setDead(true);
         }
-        //continueLevel();
-        //messaggio al server player morto
     }
-
-
-    private void continueLevel () {
-        int dx = 1;
-        int random;
-
-        /*for (int i=0;i<N_ROBOTS;i++) {
-            robot_y[i] = 4 * BLOCK_SIZE;
-            robot_x[i] = 4 * BLOCK_SIZE;
-            robot_dy[i] = 0;
-            robot_dx[i] = dx;
-            dx = -dx;
-            random = (int) Math.random() * (currentSpeed +1);
-
-            if (random > currentSpeed) {
-                random = currentSpeed;
-            }
-
-            robotSpeed [i] = validSpeed[random];
-        }*/
-
-        //broadcast message quando tutti morti o tutti secondo livello?????
-    }
-
 
     private void drawMaze(Graphics2D g2d) {
 
