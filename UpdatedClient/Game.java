@@ -19,6 +19,7 @@ public class Game extends JPanel implements ActionListener {
     private ArrayList<Robot> tantiRobot = new ArrayList<Robot>();
 
     private User player;
+    private boolean dying = false;
     private User opponent;
 
     private String IP;
@@ -149,10 +150,9 @@ public class Game extends JPanel implements ActionListener {
         if (!allDead()) {
             moveRobots(g2d);
         }
-        if (player.getDead()) {
+        if (dying) {
             death();
         }
-
 
         movePlayer(player);
         movePlayer(opponent);
@@ -248,8 +248,12 @@ public class Game extends JPanel implements ActionListener {
         for (int i=0;i<tantiRobot.size();i++) {
             drawRobot(g2d, tantiRobot.get(i).getX() + 1, tantiRobot.get(i).getY() + 1);
 
-            if (player.getX() > (tantiRobot.get(i).getX() - 12) && player.getX() < (tantiRobot.get(i).getX() + 12) && player.getY() > (tantiRobot.get(i).getY() - 12) && player.getY()< (tantiRobot.get(i).getY() + 12) && player.getInGame()) {
-                player.setDead(true);
+            if (player.getX() > (tantiRobot.get(i).getX() - 12) && 
+                player.getX() < (tantiRobot.get(i).getX() + 12) && 
+                player.getY() > (tantiRobot.get(i).getY() - 12) && 
+                player.getY()< (tantiRobot.get(i).getY() + 12) && 
+                player.getInGame()) {
+                dying = true;
             }
         }
     }
@@ -287,6 +291,14 @@ public class Game extends JPanel implements ActionListener {
             player.setInGame(false);
             player.setDead(true);
         }
+
+        player.setX(7 * BLOCK_SIZE);  
+        player.setY(11 * BLOCK_SIZE);
+        player.setDX(0); 
+        player.setDY(0);
+        player.setReqDX(0);  
+        player.setReqDY(0); 
+        dying = false;
     }
 
     private void drawMaze(Graphics2D g2d) {

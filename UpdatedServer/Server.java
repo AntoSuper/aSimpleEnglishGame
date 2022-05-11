@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.zip.CheckedOutputStream;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
@@ -57,6 +58,9 @@ public class Server implements ActionListener {
 
         try {
             while (!serverSocket.isClosed()) {
+                if (tantiUser.size()==0) {
+                    reset();
+                }
 
                 Socket connectionSocket = serverSocket.accept(); 
                 System.out.println("Client connected! IP: " + connectionSocket.getRemoteSocketAddress());
@@ -187,6 +191,11 @@ public class Server implements ActionListener {
         }
     }
 
+    public void reset() {
+        tantiRobot.clear();
+        setVariables();
+    }
+
     public void checkMaze () {
         int i = 0;
         boolean finished = true;
@@ -194,16 +203,14 @@ public class Server implements ActionListener {
         while (i < N_BLOCKS * N_BLOCKS && finished) {
             if ((screenData[i] & 48) != 0) {
                 finished = false;
+                inGame=false;
             }
             i++;
         }
 
         if (finished) {
-            player.setScore(player.getScore()+50);  
-            if (currentSpeed<maxSpeed) {
-                currentSpeed++;
-            }
             initLevel();
+        }
         }
         
     private boolean allInGame () {
@@ -334,6 +341,7 @@ public class Server implements ActionListener {
 
         switch (comando) {
             case "moveRobots": moveRobots();
+                                checkMaze();
                 break;
         }
     }
