@@ -15,7 +15,8 @@ public class RandomQuestion extends JPanel implements ActionListener {
 
         ArrayList<Question> aLotOfQuestions = readFile("files/questions.txt");
 
-        q = aLotOfQuestions.get((int)(Math.random() * aLotOfQuestions.size())); 
+        q = aLotOfQuestions.get((int)(Math.random() * aLotOfQuestions.size()));
+        System.out.println(aLotOfQuestions.size()); 
 
         JPanel upper = new JPanel();
         upper.setLayout(new FlowLayout());

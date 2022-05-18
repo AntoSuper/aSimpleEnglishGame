@@ -9,7 +9,7 @@ public class Test extends JFrame {
 
     public Test() {
         super("Test");
-        this.setSize(600,600);
+        this.setSize(600, 300);
         this.setLayout(new FlowLayout());
 
         RandomQuestion q = new RandomQuestion();
