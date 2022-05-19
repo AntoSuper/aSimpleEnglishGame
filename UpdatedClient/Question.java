@@ -78,19 +78,19 @@ public class Question
         return q;
     }
 
-    public String getAnswear1 () {
+    public String getAnswer1 () {
         return a1;
     }
 
-    public String getAnswear2 () {
+    public String getAnswer2 () {
         return a2;
     }
 
-    public String getAnswear3 () {
+    public String getAnswer3 () {
         return a3;
     }
 
-    public String getAnswear4 () {
+    public String getAnswer4 () {
         if (check == 1) {
             return a4;
         }
