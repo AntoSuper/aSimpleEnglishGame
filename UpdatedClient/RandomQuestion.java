@@ -113,62 +113,62 @@ public class RandomQuestion extends JPanel implements ActionListener {
         {
             if(a1.isSelected())
             {
-                a1.setIcon(new ImageIcon(getClass().getResource("2.png")));
+                a1.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
             }else
             {
-                a1.setIcon(new ImageIcon(getClass().getResource("3.png")));
+                a1.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
             if(a2.isSelected())
             {
-                a2.setIcon(new ImageIcon(getClass().getResource("2.png")));
+                a2.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
             }else
             {
-                a2.setIcon(new ImageIcon(getClass().getResource("3.png")));
+                a2.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
             if(a3.isSelected())
             {
-                a3.setIcon(new ImageIcon(getClass().getResource("2.png")));
+                a3.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
             }else
             {
-                a3.setIcon(new ImageIcon(getClass().getResource("3.png")));
+                a3.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
             if(a4.isSelected())
             {
-                a4.setIcon(new ImageIcon(getClass().getResource("2.png")));
+                a4.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
             }else
             {
-                a4.setIcon(new ImageIcon(getClass().getResource("3.png")));
+                a4.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
         }
         if(q.getCheck()==2)
         {
             if(a1.isSelected())
             {
-                a1.setIcon(new ImageIcon(getClass().getResource("2.png")));
+                a1.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
             }else
             {
-                a1.setIcon(new ImageIcon(getClass().getResource("3.png")));
+                a1.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
             if(a2.isSelected())
             {
-                a2.setIcon(new ImageIcon(getClass().getResource("2.png")));
+                a2.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
             }else
             {
-                a2.setIcon(new ImageIcon(getClass().getResource("3.png")));
+                a2.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
             if(a3.isSelected())
             {
-                a3.setIcon(new ImageIcon(getClass().getResource("2.png")));
+                a3.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
             }else
             {
-                a3.setIcon(new ImageIcon(getClass().getResource("3.png")));
+                a3.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
         }
         if (command.equals(q.getCorrect())) {
-            correct.setIcon(new ImageIcon(getClass().getResource("yes.gif")));
+            correct.setIcon(new ImageIcon(getClass().getResource("images/yes.gif")));
         }
         else {
-            correct.setIcon(new ImageIcon(getClass().getResource("no.gif")));
+            correct.setIcon(new ImageIcon(getClass().getResource("images/no.gif")));
         }
     }
 

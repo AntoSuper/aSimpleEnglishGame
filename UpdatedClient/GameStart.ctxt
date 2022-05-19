@@ -1,5 +1,0 @@
-#BlueJ class context
-comment0.target=GameStart
-comment1.params=nickname\ character\ IP\ port
-comment1.target=GameStart(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
-numComments=2
