@@ -107,6 +107,12 @@ public class Game extends JPanel implements ActionListener {
         g2d.drawString(start, (SCREEN_SIZE)/4, 150);
     }
 
+    private void showQuestionScreen(Graphics2D g2d) {
+        String start = "Answear the question, please";
+        g2d.setColor(Color.yellow);
+        g2d.drawString(start, (SCREEN_SIZE)/4, 150);
+    }
+
     private void drawScore(Graphics2D g) {
         g.setFont(font);
         g.setColor(new Color(5, 181, 79));
@@ -151,6 +157,7 @@ public class Game extends JPanel implements ActionListener {
             moveRobots(g2d);
         }
         if (dying) {
+            question();
             death();
         }
 
@@ -286,7 +293,6 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void death() {
-        player.setLives(player.getLives()-1);
         if (player.getLives() == 0) {
             player.setInGame(false);
             player.setDead(true);
@@ -299,6 +305,28 @@ public class Game extends JPanel implements ActionListener {
         player.setReqDX(0);  
         player.setReqDY(0); 
         dying = false;
+    }
+
+    public void question() {
+        RandomQuestionWindow q = new RandomQuestionWindow();
+        player.setInGame(false);
+        openConnection(IP, port, player);
+        client.sendInfo();
+        
+        showQuestionScreen(g2d);
+        timerGame.stop();
+
+        do {
+            if (q.getCheck() == 2) {
+                player.setInGame(true);
+                timerGame.restart();
+            }
+            else {
+                player.setLives(player.getLives()-1);
+                player.setInGame(true);
+                timerGame.restart();
+            }
+        } while (q.getCheck() == 0);
     }
 
     private void drawMaze(Graphics2D g2d) {

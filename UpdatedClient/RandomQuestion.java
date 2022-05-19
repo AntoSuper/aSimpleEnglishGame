@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class RandomQuestion extends JPanel implements ActionListener {
 
     private Question q;
+    private int check = 0;
     private JLabel correct;
     
     private JRadioButton a1;
@@ -41,25 +42,25 @@ public class RandomQuestion extends JPanel implements ActionListener {
         if (q.getCheck() == 1) {
             Answers.setLayout(new GridLayout(4, 1));
 
-            a1 = new JRadioButton (q.getAnswer1(),new ImageIcon(getClass().getResource("3.png")));
+            a1 = new JRadioButton (q.getAnswer1(),new ImageIcon(getClass().getResource("images/3.png")));
             a1.setBackground(new Color(169,164,246));
             a1.setFont(new Font("Serif", Font.PLAIN, 20));
             a1.addActionListener(this);
             Answers.add(a1);
 
-            a2 = new JRadioButton (q.getAnswer2(),new ImageIcon(getClass().getResource("3.png")));
+            a2 = new JRadioButton (q.getAnswer2(),new ImageIcon(getClass().getResource("images/3.png")));
             a2.setBackground(new Color(169,164,246));
             a2.setFont(new Font("Serif", Font.PLAIN, 20));
             a2.addActionListener(this);
             Answers.add(a2);
 
-            a3 = new JRadioButton (q.getAnswer3(),new ImageIcon(getClass().getResource("3.png")));
+            a3 = new JRadioButton (q.getAnswer3(),new ImageIcon(getClass().getResource("images/3.png")));
             a3.setBackground(new Color(169,164,246));
             a3.setFont(new Font("Serif", Font.PLAIN, 20));
             a3.addActionListener(this);
             Answers.add(a3);
 
-            a4 = new JRadioButton (q.getAnswer4(),new ImageIcon(getClass().getResource("3.png")));
+            a4 = new JRadioButton (q.getAnswer4(),new ImageIcon(getClass().getResource("images/3.png")));
             a4.setBackground(new Color(169,164,246));
             a4.setFont(new Font("Serif", Font.PLAIN, 20));
             a4.addActionListener(this);
@@ -75,19 +76,19 @@ public class RandomQuestion extends JPanel implements ActionListener {
         if (q.getCheck() == 2) {
             Answers.setLayout(new GridLayout(3, 1));
             
-            a1 = new JRadioButton (q.getAnswer1(),new ImageIcon(getClass().getResource("3.png")));
+            a1 = new JRadioButton (q.getAnswer1(),new ImageIcon(getClass().getResource("images/3.png")));
             a1.setBackground(new Color(169,164,246));
             a1.setFont(new Font("Serif", Font.PLAIN, 20));
             a1.addActionListener(this);
             Answers.add(a1);
 
-            a2 = new JRadioButton (q.getAnswer2(),new ImageIcon(getClass().getResource("3.png")));
+            a2 = new JRadioButton (q.getAnswer2(),new ImageIcon(getClass().getResource("images/3.png")));
             a2.setBackground(new Color(169,164,246));
             a2.setFont(new Font("Serif", Font.PLAIN, 20));
             a2.addActionListener(this);
             Answers.add(a2);
 
-            a3 = new JRadioButton (q.getAnswer3(),new ImageIcon(getClass().getResource("3.png")));
+            a3 = new JRadioButton (q.getAnswer3(),new ImageIcon(getClass().getResource("images/3.png")));
             a3.setBackground(new Color(169,164,246));
             a3.setFont(new Font("Serif", Font.PLAIN, 20));
             a3.addActionListener(this);
@@ -109,8 +110,8 @@ public class RandomQuestion extends JPanel implements ActionListener {
     @Override
     public void actionPerformed (ActionEvent e) {
         String command = e.getActionCommand();
-        if(q.getCheck()==1)
-        {
+
+        if(q.getCheck()==1) {
             if(a1.isSelected())
             {
                 a1.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
@@ -140,8 +141,8 @@ public class RandomQuestion extends JPanel implements ActionListener {
                 a4.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
         }
-        if(q.getCheck()==2)
-        {
+
+        if(q.getCheck()==2) {
             if(a1.isSelected())
             {
                 a1.setIcon(new ImageIcon(getClass().getResource("images/2.png")));
@@ -164,11 +165,15 @@ public class RandomQuestion extends JPanel implements ActionListener {
                 a3.setIcon(new ImageIcon(getClass().getResource("images/3.png")));
             }
         }
+
         if (command.equals(q.getCorrect())) {
             correct.setIcon(new ImageIcon(getClass().getResource("images/yes.gif")));
+            check = 2;
         }
+
         else {
             correct.setIcon(new ImageIcon(getClass().getResource("images/no.gif")));
+            check = 1;
         }
     }
 
@@ -203,5 +208,9 @@ public class RandomQuestion extends JPanel implements ActionListener {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int getCheck () {
+        return check;
     }
 }
