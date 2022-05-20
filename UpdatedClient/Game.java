@@ -20,6 +20,7 @@ public class Game extends JPanel implements ActionListener {
 
     private User player;
     private boolean dying = false;
+    private RandomQuestion q;
     private User opponent;
 
     private String IP;
@@ -36,6 +37,7 @@ public class Game extends JPanel implements ActionListener {
     private short [] screenData;
 
     private Timer timerGame;
+    private Timer timerQuestion;
 
     private final short levelData[] = { 
         19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
@@ -157,7 +159,6 @@ public class Game extends JPanel implements ActionListener {
             moveRobots(g2d);
         }
         if (dying) {
-            question();
             death();
         }
 
@@ -293,10 +294,17 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void death() {
-        if (player.getLives() == 0) {
-            player.setInGame(false);
-            player.setDead(true);
-        }
+        q = new RandomQuestion();
+        player.setInGame(false);
+        openConnection(IP, port, player);
+        client.sendInfo();
+
+        showQuestionScreen(g2d);
+        timerGame.stop();
+
+        timerQuestion = new Timer(1000, this);
+        timerQuestion.setActionCommand("timerQuestion"); 
+        timerQuestion.start();
 
         player.setX(7 * BLOCK_SIZE);  
         player.setY(11 * BLOCK_SIZE);
@@ -304,29 +312,6 @@ public class Game extends JPanel implements ActionListener {
         player.setDY(0);
         player.setReqDX(0);  
         player.setReqDY(0); 
-        dying = false;
-    }
-
-    public void question() {
-        RandomQuestionWindow q = new RandomQuestionWindow();
-        player.setInGame(false);
-        openConnection(IP, port, player);
-        client.sendInfo();
-        
-        showQuestionScreen(g2d);
-        timerGame.stop();
-
-        do {
-            if (q.getCheck() == 2) {
-                player.setInGame(true);
-                timerGame.restart();
-            }
-            else {
-                player.setLives(player.getLives()-1);
-                player.setInGame(true);
-                timerGame.restart();
-            }
-        } while (q.getCheck() == 0);
     }
 
     private void drawMaze(Graphics2D g2d) {
@@ -459,6 +444,38 @@ public class Game extends JPanel implements ActionListener {
     
     @Override
     public void actionPerformed (ActionEvent e) {
-        repaint();
+        String command = e.getActionCommand();
+
+        switch(command) {
+            case "timer": repaint();
+                break;
+
+            case "timerQuestion": if (q.getCheck() == 2) {
+                                    player.setInGame(true);
+                                    dying = false;
+                                        
+                                    timerQuestion.stop();
+                                    q.setVisible(false);
+                                    q.dispose();
+                                    timerGame.restart();
+                                }
+                        
+                                if (q.getCheck() == 1) {
+                                    player.setLives(player.getLives()-1);
+                                    dying = false;
+                                    player.setInGame(true);
+
+                                    if (player.getLives() == 0) {
+                                        player.setInGame(false);
+                                        player.setDead(true);
+                                    }
+                        
+                                    timerQuestion.stop();
+                                    q.setVisible(false);
+                                    q.dispose();
+                                    timerGame.restart();
+                                }
+                    break;
+        }
     }
 }

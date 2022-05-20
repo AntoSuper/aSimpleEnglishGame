@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 
-public class RandomQuestion extends JPanel implements ActionListener {
+public class RandomQuestion extends JFrame implements ActionListener {
 
     private Question q;
     private int check = 0;
@@ -17,6 +17,8 @@ public class RandomQuestion extends JPanel implements ActionListener {
     private JRadioButton a4;
 
     public RandomQuestion () {
+        super("Quesrtion");
+        this.setSize(600,400);
         this.setLayout(new BorderLayout());
 
         ArrayList<Question> aLotOfQuestions = readFile("files/questions.txt");
@@ -105,6 +107,8 @@ public class RandomQuestion extends JPanel implements ActionListener {
         correct.setFont(new Font("Serif", Font.BOLD, 20));
         below.add(correct);
         this.setBackground(new Color(105,96,236));
+
+        this.setVisible(true);
     }
 
     @Override
