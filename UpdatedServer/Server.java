@@ -113,14 +113,20 @@ public class Server implements ActionListener {
                                                 else {
                                                     tantiUser.get(i).setDead(false);
                                                 }
-                                                tantiUser.get(i).setLives(Integer.parseInt(msg[5]));
-                                                tantiUser.get(i).setScore(Integer.parseInt(msg[6]));
-                                                tantiUser.get(i).setX(Integer.parseInt(msg[7]));
-                                                tantiUser.get(i).setY(Integer.parseInt(msg[8]));
-                                                tantiUser.get(i).setDX(Integer.parseInt(msg[9]));
-                                                tantiUser.get(i).setDY(Integer.parseInt(msg[10]));
-                                                tantiUser.get(i).setReqDX(Integer.parseInt(msg[11]));
-                                                tantiUser.get(i).setReqDY(Integer.parseInt(msg[12]));
+                                                if (msg[5].equals("true")) {
+                                                    tantiUser.get(i).setQuestion(true);
+                                                }
+                                                else {
+                                                    tantiUser.get(i).setQuestion(false);
+                                                }
+                                                tantiUser.get(i).setLives(Integer.parseInt(msg[6]));
+                                                tantiUser.get(i).setScore(Integer.parseInt(msg[7]));
+                                                tantiUser.get(i).setX(Integer.parseInt(msg[8]));
+                                                tantiUser.get(i).setY(Integer.parseInt(msg[9]));
+                                                tantiUser.get(i).setDX(Integer.parseInt(msg[10]));
+                                                tantiUser.get(i).setDY(Integer.parseInt(msg[11]));
+                                                tantiUser.get(i).setReqDX(Integer.parseInt(msg[12]));
+                                                tantiUser.get(i).setReqDY(Integer.parseInt(msg[13]));
 
                                                 sendMessage("msgReceived");
                                                 closeConnection(connectionSocket, inFromClient, outToClient);
@@ -140,6 +146,12 @@ public class Server implements ActionListener {
                                                             opponentInfo = opponentInfo + "false§";
                                                         }
                                                         if (tantiUser.get(i).getDead()) {
+                                                            opponentInfo = opponentInfo + "true§";
+                                                        }
+                                                        else {
+                                                            opponentInfo = opponentInfo + "false§";
+                                                        }
+                                                        if (tantiUser.get(i).getQuestion()) {
                                                             opponentInfo = opponentInfo + "true§";
                                                         }
                                                         else {

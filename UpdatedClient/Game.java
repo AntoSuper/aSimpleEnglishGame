@@ -27,6 +27,7 @@ public class Game extends JPanel implements ActionListener {
     private int port;
     private Client client;
     private Socket socket;
+    private boolean closing;
 
     private Image heart, robot;
     private Image upTommy, downTommy, leftTommy, rightTommy;
@@ -110,7 +111,13 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void showQuestionScreen(Graphics2D g2d) {
-        String start = "Answear the question, please";
+        String start = "Please, answear the question!";
+        g2d.setColor(Color.yellow);
+        g2d.drawString(start, (SCREEN_SIZE)/4, 150);
+    }
+
+    private void showWaitScreen(Graphics2D g2d) {
+        String start = "Please, wait for your opponent...";
         g2d.setColor(Color.yellow);
         g2d.drawString(start, (SCREEN_SIZE)/4, 150);
     }
@@ -259,7 +266,7 @@ public class Game extends JPanel implements ActionListener {
             if (player.getX() > (tantiRobot.get(i).getX() - 12) && 
                 player.getX() < (tantiRobot.get(i).getX() + 12) && 
                 player.getY() > (tantiRobot.get(i).getY() - 12) && 
-                player.getY()< (tantiRobot.get(i).getY() + 12) && 
+                player.getY() < (tantiRobot.get(i).getY() + 12) && 
                 player.getInGame()) {
                 dying = true;
             }
@@ -296,6 +303,7 @@ public class Game extends JPanel implements ActionListener {
     private void death() {
         q = new RandomQuestion();
         player.setInGame(false);
+        player.setQuestion(true);
         openConnection(IP, port, player);
         client.sendInfo();
 
@@ -356,6 +364,15 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
+    public boolean allInGame () {
+        if (player.getInGame() && opponent.getInGame()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
 
@@ -377,6 +394,27 @@ public class Game extends JPanel implements ActionListener {
             screenData = client.getScreenData();
         }
 
+        if (opponent.getQuestion() ) {
+            showWaitScreen(g2d);
+        }
+
+        if (player.getDead()) {
+            timerGame.stop();
+            //JFrame sconfitta
+
+            openConnection(IP, port, player);
+            client.logout();
+            closing = true;
+        }
+        if (opponent.getDead()) {
+            timerGame.stop();
+            //JFrame vittoria
+
+            openConnection(IP, port, player);
+            client.logout();
+            closing = true;
+        }
+
         if (allInGame()) {
             playGame(g2d);
         }
@@ -388,13 +426,8 @@ public class Game extends JPanel implements ActionListener {
         g2d.dispose();
     }
 
-    public boolean allInGame () {
-        if (player.getInGame() && opponent.getInGame()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    public boolean getClosing () {
+        return closing;
     }
 
     class TAdapter extends KeyAdapter {
@@ -452,6 +485,7 @@ public class Game extends JPanel implements ActionListener {
 
             case "timerQuestion": if (q.getCheck() == 2) {
                                     player.setInGame(true);
+                                    player.setQuestion(false);
                                     dying = false;
                                         
                                     timerQuestion.stop();
@@ -464,6 +498,7 @@ public class Game extends JPanel implements ActionListener {
                                     player.setLives(player.getLives()-1);
                                     dying = false;
                                     player.setInGame(true);
+                                    player.setQuestion(false);
 
                                     if (player.getLives() == 0) {
                                         player.setInGame(false);

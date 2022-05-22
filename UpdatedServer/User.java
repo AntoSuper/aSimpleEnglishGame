@@ -3,6 +3,7 @@ public class User {
     private String character;
     private boolean inGame = false;
     private boolean dead = false;
+    private boolean question = false;
     private int lives=3;
     private int score=0;
     private int x = 7 * Server.BLOCK_SIZE;
@@ -35,6 +36,10 @@ public class User {
 
     public boolean getDead () {
         return dead;
+    }
+
+    public boolean getQuestion () {
+        return question;
     }
 
     public int getLives () {
@@ -83,6 +88,10 @@ public class User {
 
     public void setDead (boolean dead) {
         this.dead=dead;
+    }
+
+    public void setQuestion (boolean question) {
+        this.question=question;
     }
 
     public void setLives (int lives) {

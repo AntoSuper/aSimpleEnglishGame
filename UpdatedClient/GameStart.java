@@ -1,8 +1,9 @@
-import java.io.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-import javax.swing.JFrame;
+public class GameStart extends JFrame implements ActionListener {
 
-public class GameStart extends JFrame {
+    private Game game;
 
     public GameStart (String nickname, String character, String IP, int port) {
         super("Game");
@@ -10,6 +11,17 @@ public class GameStart extends JFrame {
         setSize(380, 420);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        add(new Game(nickname, character, IP, port));
+        game = new Game(nickname, character, IP, port);
+        add(game);
+        Timer t = new Timer(100, this);
+        t.setActionCommand("timer"); 
+        t.start();
+    }
+
+    public void actionPerformed (ActionEvent e) {
+        if (game.getClosing()) {
+            this.setVisible(false);
+            dispose();
+        }
     }
 }

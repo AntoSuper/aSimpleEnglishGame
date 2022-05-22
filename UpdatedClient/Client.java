@@ -69,6 +69,12 @@ public class Client {
         else {
             myInfo = myInfo + "false§";
         }
+        if (user.getQuestion()) {
+            myInfo = myInfo + "true§";
+        }
+        else {
+            myInfo = myInfo + "false§";
+        }
 
         myInfo = myInfo + user.getLives() + "§" + user.getScore() + "§" + user.getX() + "§" + user.getY() + "§" + user.getDX() + "§" + user.getDY() + "§" + user.getReqDX() + "§" + user.getReqDY();
 
@@ -93,14 +99,20 @@ public class Client {
         else {
             opponent.setDead(false);
         }
-        opponent.setLives(Integer.parseInt(msg[5]));
-        opponent.setScore(Integer.parseInt(msg[6]));
-        opponent.setX(Integer.parseInt(msg[7]));
-        opponent.setY(Integer.parseInt(msg[8]));
-        opponent.setDX(Integer.parseInt(msg[9]));
-        opponent.setDY(Integer.parseInt(msg[10]));
-        opponent.setReqDX(Integer.parseInt(msg[11]));
-        opponent.setReqDY(Integer.parseInt(msg[12]));
+        if (msg[5].equals("true")) {
+            opponent.setQuestion(true);
+        }
+        else {
+            opponent.setQuestion(false);
+        }
+        opponent.setLives(Integer.parseInt(msg[6]));
+        opponent.setScore(Integer.parseInt(msg[7]));
+        opponent.setX(Integer.parseInt(msg[8]));
+        opponent.setY(Integer.parseInt(msg[9]));
+        opponent.setDX(Integer.parseInt(msg[10]));
+        opponent.setDY(Integer.parseInt(msg[11]));
+        opponent.setReqDX(Integer.parseInt(msg[12]));
+        opponent.setReqDY(Integer.parseInt(msg[13]));
 
         closeConnection(clientSocket, inFromServer, outToServer);
         return opponent;
