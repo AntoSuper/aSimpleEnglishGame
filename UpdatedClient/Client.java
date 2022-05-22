@@ -8,6 +8,8 @@ public class Client {
     private BufferedWriter outToServer;
     private User user;
 
+    private int randomData;
+
     public Client (Socket socket, User user) {
         try {
             this.clientSocket = socket;
@@ -122,17 +124,23 @@ public class Client {
         sendMessage("screenData§"+user.getNickname());
         String msg[] = receiveMessage().split("§");
 
-        int DIM = msg.length-1;
+        randomData = Integer.parseInt(msg[1]);
+
+        int DIM = msg.length-2;
         short screenData[] = new short[DIM];
         
         int j = 0;
-            for (int i=1;i<msg.length;i++) {
+            for (int i=2;i<msg.length;i++) {
                 screenData[j] = Short.parseShort(msg[i]);
                 j++;
             }
 
         closeConnection(clientSocket, inFromServer, outToServer);
         return screenData;
+    }
+
+    public int getRandomData () {
+        return randomData;
     }
 
     public void sendScreenData (short[] screenData) {

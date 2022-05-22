@@ -18,14 +18,14 @@ public class Game extends JPanel implements ActionListener {
     
     private ArrayList<Robot> tantiRobot = new ArrayList<Robot>();
 
-    private User player;
+    public User player;
     private boolean dying = false;
     private RandomQuestion q;
     private User opponent;
 
-    private String IP;
-    private int port;
-    private Client client;
+    public String IP;
+    public int port;
+    public Client client;
     private Socket socket;
     private boolean closing;
 
@@ -40,7 +40,8 @@ public class Game extends JPanel implements ActionListener {
     private Timer timerGame;
     private Timer timerQuestion;
 
-    private final short levelData[] = { 
+    private short [] levelData = new short[N_BLOCKS * N_BLOCKS];
+    private final short levelData1[] = { 
         19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
         17, 16, 16, 16, 16, 24, 16, 16, 16, 16, 16, 16, 16, 16, 20,
         25, 24, 24, 24, 28, 0, 17, 16, 16, 16, 16, 16, 16, 16, 20,
@@ -56,6 +57,42 @@ public class Game extends JPanel implements ActionListener {
         17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 20,
         17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 20,
         25, 24, 24, 24, 26, 24, 24, 24, 24, 24, 24, 24, 24, 24, 28
+    };
+
+    private final short levelData2[] = { 
+        19,	18,	26,	18,	18,	18,	18,	26,	26,	18,	18,	18,	18,	18,	22,
+        17,	20,	0,	17,	16,	16,	20,	0,	0,	17,	24,	16,	16,	16,	20,
+        17,	20,	0,	25,	24,	16,	20,	0,	0,	21,	0,	17,	16,	16,	20,
+        17,	20,	0,	0,	0,	17,	16,	18,	18,	20,	0,	17,	16,	16,	20,
+        17,	20,	0,	0,	0,	17,	16,	16,	16,	28,	0,	17,	16,	16,	20,
+        17,	16,	18,	18,	18,	16,	16,	16,	20,	0,	0,	17,	16,	16,	20,
+        17,	16,	16,	16,	16,	16,	16,	16,	20,	0,	0,	17,	16,	16,	20,
+        17,	16,	16,	16,	16,	16,	16,	24,	16,	22,	0,	17,	16,	16,	20,
+        17,	16,	16,	16,	16,	16,	20,	0,	17,	20,	0,	17,	24,	24,	20,
+        17,	16,	16,	16,	24,	24,	28,	0,	17,	20,	0,	21,	0,	0,	21,
+        17,	16,	16,	20,	0,	0,	0,	0,	17,	20,	0,	21,	0,	0,	21,
+        21,	0,	17,	20,	0,	0,	0,	0,	17,	16,	18,	20,	0,	0,	21,
+        21,	0,	17,	16,	18,	18,	18,	18,	16,	16,	16,	16,	18,	18,	20,
+        21,	0,	17,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	20,
+        17,	26,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	28
+    };
+
+    private final short levelData3[] = { 
+        19,	18,	18,	18,	18,	26,	26,	26,	18,	18,	18,	18,	18,	18,	22,
+        17,	16,	24,	16,	20,	0,	0,	0,	17,	16,	16,	24,	16,	16,	28,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	16,	20,	0,	17,	20,	4,
+        17,	20,	0,	17,	16,	22,	0,	19,	16,	16,	20,	0,	17,	20,	4,
+        17,	20,	0,	17,	16,	16,	18,	16,	16,	16,	28,	0,	25,	20,	4,
+        17,	20,	0,	17,	16,	24,	24,	24,	16,	20,	0,	0,	0,	21,	4,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	20,	0,	0,	0,	21,	4,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	16,	22,	0,	19,	20,	4,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	24,	20,	0,	17,	16,	20,
+        17,	16,	18,	16,	20,	0,	0,	0,	25,	0,	25,	0,	17,	16,	20,
+        17,	24,	24,	24,	16,	18,	18,	18,	20,	0,	25,	0,	17,	16,	20,
+        17,	0,	0,	0,	16,	16,	16,	16,	20,	0,	17,	18,	24,	24,	20,
+        17,	0,	0,	0,	17,	16,	16,	16,	16,	18,	16,	20,	0,	0,	21,
+        17,	18,	18,	18,	16,	16,	16,	16,	16,	16,	16,	20,	0,	0,	21,
+        25,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	28,	8,	8,	29
     };
 
     public void openConnection (String IP, int port, User user) {
@@ -143,8 +180,19 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void initLevel() {
-        for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
-            screenData[i] = levelData[i];
+        openConnection(IP, port, player);
+        screenData = client.getScreenData();
+
+        if (client.getRandomData() < 33) {
+            levelData = levelData1;
+        }
+
+        if (client.getRandomData() >= 33 && client.getRandomData() < 66) {
+            levelData = levelData2;
+        }
+
+        if (client.getRandomData() >= 66) {
+            levelData = levelData3;
         }
 
         for (int i=0;i<6;i++) {
@@ -330,7 +378,7 @@ public class Game extends JPanel implements ActionListener {
         for (y = 0; y < SCREEN_SIZE; y += BLOCK_SIZE) {
             for (x = 0; x < SCREEN_SIZE; x += BLOCK_SIZE) {
 
-                g2d.setColor(new Color(0,72,251));
+                g2d.setColor(new Color(255,0,255));
                 g2d.setStroke(new BasicStroke(5));
                 
                 if ((levelData[i] == 0)) { 
@@ -400,25 +448,23 @@ public class Game extends JPanel implements ActionListener {
 
         if (player.getDead()) {
             timerGame.stop();
+
             //JFrame sconfitta
 
-            openConnection(IP, port, player);
-            client.logout();
             closing = true;
         }
         if (opponent.getDead()) {
             timerGame.stop();
+
             //JFrame vittoria
 
-            openConnection(IP, port, player);
-            client.logout();
             closing = true;
         }
 
         if (allInGame()) {
             playGame(g2d);
         }
-        else {
+        else if ((!player.getDead() || !opponent.getDead()) && !opponent.getQuestion()) {
             showIntroScreen(g2d);
         }
 

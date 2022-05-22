@@ -28,7 +28,8 @@ public class Server implements ActionListener {
     private final int maxSpeed = 6;
 
     private short [] screenData;
-    private final short levelData[] = { 
+    private int randomData;
+    private final short levelData1[] = { 
         19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
         17, 16, 16, 16, 16, 24, 16, 16, 16, 16, 16, 16, 16, 16, 20,
         25, 24, 24, 24, 28, 0, 17, 16, 16, 16, 16, 16, 16, 16, 20,
@@ -44,6 +45,42 @@ public class Server implements ActionListener {
         17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 20,
         17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 20,
         25, 24, 24, 24, 26, 24, 24, 24, 24, 24, 24, 24, 24, 24, 28
+    };
+
+    private final short levelData2[] = { 
+        19,	18,	26,	18,	18,	18,	18,	26,	26,	18,	18,	18,	18,	18,	22,
+        17,	20,	0,	17,	16,	16,	20,	0,	0,	17,	24,	16,	16,	16,	20,
+        17,	20,	0,	25,	24,	16,	20,	0,	0,	21,	0,	17,	16,	16,	20,
+        17,	20,	0,	0,	0,	17,	16,	18,	18,	20,	0,	17,	16,	16,	20,
+        17,	20,	0,	0,	0,	17,	16,	16,	16,	28,	0,	17,	16,	16,	20,
+        17,	16,	18,	18,	18,	16,	16,	16,	20,	0,	0,	17,	16,	16,	20,
+        17,	16,	16,	16,	16,	16,	16,	16,	20,	0,	0,	17,	16,	16,	20,
+        17,	16,	16,	16,	16,	16,	16,	24,	16,	22,	0,	17,	16,	16,	20,
+        17,	16,	16,	16,	16,	16,	20,	0,	17,	20,	0,	17,	24,	24,	20,
+        17,	16,	16,	16,	24,	24,	28,	0,	17,	20,	0,	21,	0,	0,	21,
+        17,	16,	16,	20,	0,	0,	0,	0,	17,	20,	0,	21,	0,	0,	21,
+        21,	0,	17,	20,	0,	0,	0,	0,	17,	16,	18,	20,	0,	0,	21,
+        21,	0,	17,	16,	18,	18,	18,	18,	16,	16,	16,	16,	18,	18,	20,
+        21,	0,	17,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	20,
+        17,	26,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	28
+    };
+
+    private final short levelData3[] = { 
+        19,	18,	18,	18,	18,	26,	26,	26,	18,	18,	18,	18,	18,	18,	22,
+        17,	16,	24,	16,	20,	0,	0,	0,	17,	16,	16,	24,	16,	16,	28,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	16,	20,	0,	17,	20,	4,
+        17,	20,	0,	17,	16,	22,	0,	19,	16,	16,	20,	0,	17,	20,	4,
+        17,	20,	0,	17,	16,	16,	18,	16,	16,	16,	28,	0,	25,	20,	4,
+        17,	20,	0,	17,	16,	24,	24,	24,	16,	20,	0,	0,	0,	21,	4,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	20,	0,	0,	0,	21,	4,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	16,	22,	0,	19,	20,	4,
+        17,	20,	0,	17,	20,	0,	0,	0,	17,	24,	20,	0,	17,	16,	20,
+        17,	16,	18,	16,	20,	0,	0,	0,	25,	0,	25,	0,	17,	16,	20,
+        17,	24,	24,	24,	16,	18,	18,	18,	20,	0,	25,	0,	17,	16,	20,
+        17,	0,	0,	0,	16,	16,	16,	16,	20,	0,	17,	18,	24,	24,	20,
+        17,	0,	0,	0,	17,	16,	16,	16,	16,	18,	16,	20,	0,	0,	21,
+        17,	18,	18,	18,	16,	16,	16,	16,	16,	16,	16,	20,	0,	0,	21,
+        25,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	28,	8,	8,	29
     };
 
     private Timer t;
@@ -172,7 +209,7 @@ public class Server implements ActionListener {
                             break;
 
                         case "screenData": if (screenData!=null) {
-                                                String data = "data§";
+                                                String data = "data§" + randomData+"§";
                                                 for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
                                                     data = data + screenData[i] + "§";
                                                 }
@@ -238,7 +275,6 @@ public class Server implements ActionListener {
     }
 
     private void setVariables() {
-
         for (int i=0;i<N_ROBOTS;i++) {
             tantiRobot.add(new Robot());
 
@@ -254,8 +290,21 @@ public class Server implements ActionListener {
     }
 
     private void initLevel() {
-        for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
-            screenData[i] = levelData[i];
+        randomData = (int) (Math.random() * 99) + 1;
+        if (randomData<33) {
+            for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
+                screenData[i] = levelData1[i];
+            }
+        }
+        if (randomData >=33 && randomData<66) {
+            for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
+                screenData[i] = levelData2[i];
+            }
+        }
+        if (randomData >=66) {
+            for (int i=0;i<N_BLOCKS * N_BLOCKS; i++) {
+                screenData[i] = levelData3[i];
+            }
         }
 
         if (/*allInGame() && */inGame!=true) {
