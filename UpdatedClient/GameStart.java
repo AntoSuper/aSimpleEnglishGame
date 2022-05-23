@@ -2,7 +2,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.net.*;
 
-public class GameStart extends JFrame implements ActionListener {
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
+public class GameStart extends JFrame implements ActionListener, WindowListener {
 
     private Game game;
     private Client client;
@@ -21,26 +25,77 @@ public class GameStart extends JFrame implements ActionListener {
 
     public GameStart (String nickname, String character, String IP, int port) {
         super("Game");
-        setVisible(true);
         setSize(380, 420);
+
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         game = new Game(nickname, character, IP, port);
         add(game);
-        t = new Timer(1000, this);
+
+        MyDefaultMetalTheme a=new MyDefaultMetalTheme();
+        
+        MetalLookAndFeel.setCurrentTheme(a);
+        try {
+          UIManager.setLookAndFeel(new MetalLookAndFeel());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+    
+        SwingUtilities.updateComponentTreeUI(this);
+        
+        t = new Timer(250, this);
         t.setActionCommand("timer"); 
         t.start();
+
+        setVisible(true);
     }
 
     public void actionPerformed (ActionEvent e) {
         if (game.getClosing()) {
 
             openConnection(game.IP, game.port, game.player);
-            game.client.logout();
+            client.logout();
+            t.stop();
 
             this.setVisible(false);
             dispose();
-            t.stop();
         }
+    }
+
+    public void windowOpened (WindowEvent e) {
+        
+    }
+    
+    public void windowClosing (WindowEvent e) {
+        openConnection(game.IP, game.port, game.player);
+        client.logout();
+        t.stop();
+
+        this.setVisible(false);
+        dispose();
+    }
+    
+    public void windowClosed (WindowEvent e) {
+    
+    }
+    
+    public void windowIconified (WindowEvent e) {
+        
+    }
+    
+    public void windowDeiconified (WindowEvent e) {
+        
+    }
+    
+    public void windowActivated (WindowEvent e) {
+        
+    }
+    
+    public void windowDeactivated (WindowEvent e) {
+        
     }
 }

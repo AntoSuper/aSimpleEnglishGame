@@ -1,16 +1,32 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.colorchooser.ColorChooserComponentFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class Lose extends JFrame implements ActionListener
 {
     public Lose(){
-        Font f = new Font("TimesRoman", Font.PLAIN, 30);
+        super ("Defeat");
+
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
+        Font f = new Font("Serif", Font.PLAIN, 30);
 
         setSize(480,340);
         JPanel Background = new JPanel();
+
+        MyDefaultMetalTheme a=new MyDefaultMetalTheme();
+        
+        MetalLookAndFeel.setCurrentTheme(a);
+        try {
+          UIManager.setLookAndFeel(new MetalLookAndFeel());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
 
         Background.setOpaque(true);
         Background.setLayout(new GridLayout(1,2));

@@ -17,7 +17,7 @@ public class RandomQuestion extends JFrame implements ActionListener {
     private JRadioButton a4;
 
     public RandomQuestion () {
-        super("Quesrtion");
+        super("Answear the question, please");
         this.setSize(600,400);
         this.setLayout(new BorderLayout());
 

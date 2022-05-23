@@ -2,23 +2,45 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
 public class Win extends JFrame implements ActionListener
 {
     public Win()
     {
+        super("Victory");
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
         setSize(500,500);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        setLayout(new GridLayout(2, 1));
         setResizable(false);
-        
-        JPanel win=new JPanel();
-        JLabel w=new JLabel("CONGRATULATIONS, YOU WON!!!");
 
+        MyDefaultMetalTheme a=new MyDefaultMetalTheme();
+        
+        MetalLookAndFeel.setCurrentTheme(a);
+        try {
+          UIManager.setLookAndFeel(new MetalLookAndFeel());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        
+        JPanel win = new JPanel();
+        win.setLayout(new FlowLayout());
+
+        JLabel w = new JLabel("CONGRATULATIONS");
         w.setForeground(new Color(187,161,79));
         w.setFont(new Font("Serif",Font.BOLD,28));
+
+        JLabel w1 = new JLabel("YOU HAVE FOUND THE BOOK");
+        w1.setForeground(new Color(187,161,79));
+        w1.setFont(new Font("Serif",Font.BOLD,28));
         
         win.setBackground(new Color(164,209,162));
         win.add(w);
+        win.add(w1);
         add(win,BorderLayout.NORTH);
         
         JPanel empty=new JPanel();

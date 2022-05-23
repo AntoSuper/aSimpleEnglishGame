@@ -1,15 +1,14 @@
-import java.io.*;
-
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+
+import java.awt.*;
+import java.awt.event.*;
 
 public class GameLogin extends JFrame implements KeyListener, ActionListener {
 
