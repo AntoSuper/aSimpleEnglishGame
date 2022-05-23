@@ -35,7 +35,7 @@ public class Client {
         String msg[] = receiveMessage().split("§");
 
         if (msg[0].equals("welcome")) {
-            System.out.println("Enjoy the game!");
+            
         }
         
         closeConnection(clientSocket, inFromServer, outToServer);

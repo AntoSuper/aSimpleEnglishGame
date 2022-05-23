@@ -1,7 +1,6 @@
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.zip.CheckedOutputStream;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
@@ -59,7 +58,7 @@ public class Server implements ActionListener {
         17,	16,	16,	16,	16,	16,	20,	0,	17,	20,	0,	17,	24,	24,	20,
         17,	16,	16,	16,	24,	24,	28,	0,	17,	20,	0,	21,	0,	0,	21,
         17,	24,	16,	20,	0,	0,	0,	0,	17,	20,	0,	21,	0,	0,	21,
-        21,	0,	17,	20,	0,	0,	0,	0,	17,	16,	18,	20,	0,	0,	21,
+        21,	0,	17,	20,	0,	0,	0,	19,	17,	16,	18,	20,	0,	0,	21,
         21,	0,	17,	16,	18,	18,	18,	18,	16,	16,	16,	16,	18,	18,	20,
         21,	0,	17,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	20,
         25,	26,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	28
@@ -82,6 +81,7 @@ public class Server implements ActionListener {
         17,	18,	18,	18,	16,	16,	16,	16,	16,	16,	16,	20,	0,	0,	21,
         25,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	28,	0,	0,	29
     };
+
 
     private Timer t;
     private boolean inGame = false;

@@ -71,7 +71,7 @@ public class Game extends JPanel implements ActionListener {
         17,	16,	16,	16,	16,	16,	20,	0,	17,	20,	0,	17,	24,	24,	20,
         17,	16,	16,	16,	24,	24,	28,	0,	17,	20,	0,	21,	0,	0,	21,
         17,	24,	16,	20,	0,	0,	0,	0,	17,	20,	0,	21,	0,	0,	21,
-        21,	0,	17,	20,	0,	0,	0,	0,	17,	16,	18,	20,	0,	0,	21,
+        21,	0,	17,	20,	0,	0,	0,	19,	17,	16,	18,	20,	0,	0,	21,
         21,	0,	17,	16,	18,	18,	18,	18,	16,	16,	16,	16,	18,	18,	20,
         21,	0,	17,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	20,
         25,	26,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	28
@@ -442,18 +442,14 @@ public class Game extends JPanel implements ActionListener {
             screenData = client.getScreenData();
         }
 
-        if (opponent.getQuestion() ) {
-            showWaitScreen(g2d);
-        }
-
-        if (player.getDead()) {
+        if (player.getDead() || opponent.getScore()>=500) {
             timerGame.stop();
 
             Lose x = new Lose();
 
             closing = true;
         }
-        else if (opponent.getDead()) {
+        else if (opponent.getDead() || player.getScore()>=500) {
             timerGame.stop();
 
             Win x = new Win();
@@ -467,6 +463,9 @@ public class Game extends JPanel implements ActionListener {
         else {
             if ((player.getInGame() && !opponent.getInGame()) || opponent.getQuestion()) {
                 showWaitScreen(g2d);
+            }
+            else if (player.getQuestion()) {
+                showQuestionScreen(g2d);
             }
             else {
                 showIntroScreen(g2d);

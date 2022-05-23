@@ -10,11 +10,11 @@ public class Lose extends JFrame implements ActionListener
 {
     public Lose(){
         super ("Defeat");
-
+        
         this.setUndecorated(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-        Font f = new Font("Serif", Font.PLAIN, 30);
+        Font f = new Font("Serif", Font.BOLD, 30);
 
         setSize(480,340);
         JPanel Background = new JPanel();
@@ -43,14 +43,17 @@ public class Lose extends JFrame implements ActionListener
         newGame.setBorderPainted(false);
         newGame.setBackground(Color.BLACK);
         newGame.setForeground(Color.white);
+        newGame.setHorizontalAlignment(JButton.CENTER);
         newGame.setBorder(null);
         newGame.setFont(f);
         Background.add(newGame);
         
 
-        JButton exit = new JButton("EXIT");
+        JButton exit = new JButton("QUIT");
+        exit.setBorderPainted(false);
         exit.setBackground(Color.BLACK);
         exit.setForeground(Color.white);
+        exit.setHorizontalAlignment(JButton.CENTER);
         exit.setBorder(null);
         exit.setFont(f);
         Background.add(exit);
@@ -66,13 +69,16 @@ public class Lose extends JFrame implements ActionListener
     }
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getActionCommand().equals("EXIT"))
+        if(e.getActionCommand().equals("QUIT"))
         {
-            this.dispose();
+            setVisible(false);
+            dispose();
         }
         if(e.getActionCommand().equals("NEW GAME"))
         {
-            //facci quello che ti serve
+            GameLogin g = new GameLogin();
+            setVisible(false);
+            dispose();
         }
     }
 }

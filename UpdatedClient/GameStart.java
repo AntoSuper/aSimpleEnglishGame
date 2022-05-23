@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.net.*;
 
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class GameStart extends JFrame implements ActionListener, WindowListener {
@@ -25,7 +24,9 @@ public class GameStart extends JFrame implements ActionListener, WindowListener 
 
     public GameStart (String nickname, String character, String IP, int port) {
         super("Game");
-        setSize(380, 420);
+        this.addWindowListener(this);
+        setSize(375, 420);
+        setResizable(false);
 
         this.setUndecorated(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);

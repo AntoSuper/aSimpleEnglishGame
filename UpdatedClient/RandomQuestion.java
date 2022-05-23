@@ -5,6 +5,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
 public class RandomQuestion extends JFrame implements ActionListener {
 
     private Question q;
@@ -18,8 +21,21 @@ public class RandomQuestion extends JFrame implements ActionListener {
 
     public RandomQuestion () {
         super("Answear the question, please");
+
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
         this.setSize(600,400);
         this.setLayout(new BorderLayout());
+
+        MyDefaultMetalTheme a=new MyDefaultMetalTheme();
+        
+        MetalLookAndFeel.setCurrentTheme(a);
+        try {
+          UIManager.setLookAndFeel(new MetalLookAndFeel());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
 
         ArrayList<Question> aLotOfQuestions = readFile("files/questions.txt");
 
@@ -104,6 +120,7 @@ public class RandomQuestion extends JFrame implements ActionListener {
 
         correct = new JLabel("");
         correct.setBackground(new Color(105,96,236));
+        correct.setForeground(Color.RED);
         correct.setFont(new Font("Serif", Font.BOLD, 20));
         below.add(correct);
         this.setBackground(new Color(105,96,236));
@@ -171,12 +188,14 @@ public class RandomQuestion extends JFrame implements ActionListener {
         }
 
         if (command.equals(q.getCorrect())) {
-            correct.setIcon(new ImageIcon(getClass().getResource("images/yes.gif")));
+            //correct.setIcon(new ImageIcon(getClass().getResource("images/yes.gif")));
+            correct.setText("CORRECT");
             check = 2;
         }
 
         else {
-            correct.setIcon(new ImageIcon(getClass().getResource("images/no.gif")));
+            //correct.setIcon(new ImageIcon(getClass().getResource("images/no.gif")));
+            correct.setText("WRONG");
             check = 1;
         }
     }

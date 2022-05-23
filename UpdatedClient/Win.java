@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.UIManager;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class Win extends JFrame implements ActionListener
@@ -15,7 +16,7 @@ public class Win extends JFrame implements ActionListener
 
         setSize(500,500);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(2, 1));
+        setLayout(new BorderLayout());
         setResizable(false);
 
         MyDefaultMetalTheme a=new MyDefaultMetalTheme();
@@ -28,19 +29,21 @@ public class Win extends JFrame implements ActionListener
         }
         
         JPanel win = new JPanel();
-        win.setLayout(new FlowLayout());
+        win.setLayout(new BorderLayout());
 
         JLabel w = new JLabel("CONGRATULATIONS");
-        w.setForeground(new Color(187,161,79));
+        w.setForeground(Color.RED);
+        w.setHorizontalAlignment(JLabel.CENTER);
         w.setFont(new Font("Serif",Font.BOLD,28));
 
         JLabel w1 = new JLabel("YOU HAVE FOUND THE BOOK");
-        w1.setForeground(new Color(187,161,79));
+        w1.setForeground(Color.RED);
+        w1.setHorizontalAlignment(JLabel.CENTER);
         w1.setFont(new Font("Serif",Font.BOLD,28));
         
         win.setBackground(new Color(164,209,162));
-        win.add(w);
-        win.add(w1);
+        win.add(w, BorderLayout.NORTH);
+        win.add(w1, BorderLayout.SOUTH);
         add(win,BorderLayout.NORTH);
         
         JPanel empty=new JPanel();
@@ -90,12 +93,14 @@ public class Win extends JFrame implements ActionListener
     {
         if(e.getActionCommand().equals("QUIT"))
         {
+            setVisible(false);
             dispose();
-            //aggiungi cose relative al server
         }
         if(e.getActionCommand().equals("NEW GAME"))
         {
-            //fai quello che devi fare 
+            GameLogin g = new GameLogin();
+            setVisible(false);
+            dispose();
         }
     }
 }
