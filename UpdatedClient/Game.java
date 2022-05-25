@@ -445,14 +445,14 @@ public class Game extends JPanel implements ActionListener {
         if (player.getDead() || opponent.getScore()>=500) {
             timerGame.stop();
 
-            Lose x = new Lose();
+            Lose lose = new Lose();
 
             closing = true;
         }
         else if (opponent.getDead() || player.getScore()>=500) {
             timerGame.stop();
 
-            Win x = new Win();
+            Win win = new Win();
 
             closing = true;
         }

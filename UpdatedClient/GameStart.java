@@ -48,7 +48,7 @@ public class GameStart extends JFrame implements ActionListener, WindowListener 
     
         SwingUtilities.updateComponentTreeUI(this);
         
-        t = new Timer(250, this);
+        t = new Timer(100, this);
         t.setActionCommand("timer"); 
         t.start();
 

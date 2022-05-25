@@ -3,14 +3,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.UIManager;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-public class Win extends JFrame implements ActionListener
+public class Win extends JFrame implements ActionListener, WindowListener
 {
     public Win()
     {
         super("Victory");
+        this.addWindowListener(this);
         this.setUndecorated(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
@@ -102,5 +102,33 @@ public class Win extends JFrame implements ActionListener
             setVisible(false);
             dispose();
         }
+    }
+    public void windowOpened (WindowEvent e) {
+        
+    }
+    
+    public void windowClosing (WindowEvent e) {
+        this.setVisible(false);
+        dispose();
+    }
+    
+    public void windowClosed (WindowEvent e) {
+    
+    }
+    
+    public void windowIconified (WindowEvent e) {
+        
+    }
+    
+    public void windowDeiconified (WindowEvent e) {
+        
+    }
+    
+    public void windowActivated (WindowEvent e) {
+        
+    }
+    
+    public void windowDeactivated (WindowEvent e) {
+        
     }
 }

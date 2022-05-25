@@ -25,7 +25,7 @@ public class RandomQuestion extends JFrame implements ActionListener {
         this.setUndecorated(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-        this.setSize(600,400);
+        this.setSize(900,400);
         this.setLayout(new BorderLayout());
 
         MyDefaultMetalTheme a=new MyDefaultMetalTheme();
@@ -188,13 +188,11 @@ public class RandomQuestion extends JFrame implements ActionListener {
         }
 
         if (command.equals(q.getCorrect())) {
-            //correct.setIcon(new ImageIcon(getClass().getResource("images/yes.gif")));
             correct.setText("CORRECT");
             check = 2;
         }
 
         else {
-            //correct.setIcon(new ImageIcon(getClass().getResource("images/no.gif")));
             correct.setText("WRONG");
             check = 1;
         }
@@ -205,8 +203,9 @@ public class RandomQuestion extends JFrame implements ActionListener {
         String x;
         try {
             File file = new File(path);
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
+            //FileReader fr = new FileReader(file);
+            //BufferedReader br = new BufferedReader(fr);
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"ISO-8859-1"));
             
             Question q;
 
