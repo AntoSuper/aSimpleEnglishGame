@@ -25,7 +25,7 @@ public class GameLogin extends JFrame implements KeyListener, ActionListener, Wi
 
     public GameLogin() {
         super("Login");
-        this.setSize(250,100);
+        this.setSize(250,120);
         setLayout(new GridLayout(4,4));
         this.addWindowListener(this);
         
@@ -93,7 +93,6 @@ public class GameLogin extends JFrame implements KeyListener, ActionListener, Wi
     
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println("AO");
         if (e.getActionCommand().equals("openStory")) {
             try {
                 Desktop.getDesktop().open(new java.io.File("files/story.html"));
