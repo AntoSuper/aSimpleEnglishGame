@@ -1,6 +1,3 @@
-PROJECT TITLE: 
-PURPOSE OF PROJECT:
-VERSION or DATE:
-HOW TO START THIS PROJECT:
-AUTHORS:
-USER INSTRUCTIONS:
+A simple Java Game inspired by the story "The fun the had" by Isaac Asimov.
+Authors: Antonio Palladino, Antonio Gurgoglione, Antonio Mangano, Luca Russo
+
