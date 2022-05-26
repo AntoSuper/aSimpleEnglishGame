@@ -129,14 +129,14 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void loadImages () {
-        downTommy = new ImageIcon("images/guy.png").getImage();
-        upTommy = new ImageIcon("images/guy.png").getImage();
-        leftTommy = new ImageIcon("images/guy.png").getImage();
-        rightTommy = new ImageIcon("images/guy.png").getImage();
-        downMargie = new ImageIcon("images/girl.png").getImage();
-        upMargie = new ImageIcon("images/girl.png").getImage();
-        leftMargie = new ImageIcon("images/girl.png").getImage();
-        rightMargie = new ImageIcon("images/girl.png").getImage();
+        downTommy = new ImageIcon("images/tommy_front.png").getImage();
+        upTommy = new ImageIcon("images/tommy_back.png").getImage();
+        leftTommy = new ImageIcon("images/tommy_left.png").getImage();
+        rightTommy = new ImageIcon("images/tommy_right.png").getImage();
+        downMargie = new ImageIcon("images/margie_front.png").getImage();
+        upMargie = new ImageIcon("images/margie_back.png").getImage();
+        leftMargie = new ImageIcon("images/margie_left.png").getImage();
+        rightMargie = new ImageIcon("images/margie_right.png").getImage();
         robot = new ImageIcon("images/robot.png").getImage();
         heart = new ImageIcon("images/heart.png").getImage();
     }
